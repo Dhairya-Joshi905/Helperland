@@ -35,82 +35,117 @@
 import { Model, DataTypes, ModelAttributes } from 'sequelize';
 
 export class ContactUs extends Model {
+  
   id!: number;
+  
   FirstName!: string;
+  
   LastName!: string;
+  
   Email!: string;
+  
   SubjectType!: string;
+  
   Subject?: string;
+  
   PhoneNumber!: string;
+  
   Message!: string;
+  
   UploadFileName?: string;
-  createdAt!: Date;
-  updatedAt!: Date;
+  
   Status?: number;
+  
   Priority?: number;
+  
   AssignedToUser?: number;
+  
+  IsDeleted!: boolean;
+  
+  createdAt!: Date;
+  
+  updatedAt!: Date;
 };
 
 export const ContactUsModelAttributes: ModelAttributes = {
+  
   id: {
     autoIncrement: true,
     type: DataTypes.BIGINT,
     allowNull: false,
     primaryKey: true
   },
+  
   FirstName: {
     type: DataTypes.STRING,
     allowNull: false
   },
+  
   LastName: {
     type: DataTypes.STRING,
     allowNull: false
   },
+  
   Email: {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,
   },
+  
   SubjectType: {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,
   },
+  
   Subject: {
     type: DataTypes.STRING,
     unique: true
   },
+  
   PhoneNumber: {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false
   },
+  
   Message: {
     type: DataTypes.STRING,
     allowNull: false
   },
+  
   UploadFileName: {
     type: DataTypes.STRING,
     allowNull: true
   },
-  createdAt: {
-    type: DataTypes.DATE,
-    allowNull: false
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    allowNull: false
-  },
+  
   Status: {
     type: DataTypes.BIGINT,
     allowNull: true
   },
+  
   Priority: {
     type: DataTypes.BIGINT,
     allowNull: true
   },
+  
   AssignedToUser: {
     type: DataTypes.BIGINT,
     allowNull: true
+  },
+  
+  IsDeleted: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false
+  },
+  
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+  
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false
   }
 }

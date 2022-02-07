@@ -48,14 +48,14 @@
 //   return User;
 // };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModelAttributes = exports.User = void 0;
+exports.CustomerSignUpModelAttributes = exports.CustomerSignUp = void 0;
 const sequelize_1 = require("sequelize");
-class User extends sequelize_1.Model {
+class CustomerSignUp extends sequelize_1.Model {
 }
-exports.User = User;
+exports.CustomerSignUp = CustomerSignUp;
 ;
-exports.UserModelAttributes = {
-    UserId: {
+exports.CustomerSignUpModelAttributes = {
+    id: {
         autoIncrement: true,
         type: sequelize_1.DataTypes.BIGINT,
         primaryKey: true

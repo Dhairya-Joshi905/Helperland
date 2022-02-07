@@ -13,41 +13,42 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const dotenv_1 = __importDefault(require("dotenv"));
 const models_1 = require("./models");
 const routes_1 = __importDefault(require("./routes"));
-const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
-const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+//import multer from "multer";
+// import swaggerJSDoc from "swagger-jsdoc";
+// import swaggerUI from "swagger-ui-express";
 // import swaggerUi from "swagger-ui-express";
 // const internalDoc = require('./swagger/swagger.json');
-dotenv_1.default.config();
+require('dotenv').config();
 const app = (0, express_1.default)();
-const swaggerOption = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'ContactUs API',
-            version: '1.0.0',
-            description: 'Simple Helperland ContactUs API',
-            contact: {
-                name: 'Dhairya Joshi',
-                email: 'dhairyajoshi.905@gmail.com'
-            },
-            servers: [
-                { url: "http://localhost:3000" }
-            ]
-        }
-    },
-    apis: ["routes.ts"]
-};
-const swaggerDocs = (0, swagger_jsdoc_1.default)(swaggerOption);
-app.use('/', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocs));
+// const swaggerOptions={
+//     definition:{
+//         openapi:'3.0.0',
+//         info:{
+//             title:'Contact_Us API',
+//             version: '1.0.0',
+//             description:'',
+//             contact:{
+//                 name:'Dhairya Joshi',
+//                 email:'dhairyajoshi.905@gmail.com'
+//             },
+//             servers:[
+//                 {url: "http://localhost:3000"}
+//             ]
+//         }
+//     },
+//     apis:["routes.ts"]
+// }
+// const swaggerDocs = swaggerJSDoc(swaggerOptions);
+// app.use('/', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
+//app.use(multer({dest:'uploadFiles'}).single('file'));
 app.use('/', routes_1.default);
-// app.use('/swagger', swaggerUi.serve, swaggerUi.setup(internalDoc));
+//app.use('/swagger', swaggerUi.serve, swaggerUi.setup(internalDoc));
 app.listen(process.env.PORT, () => {
-    console.log(`Server running at ${process.env.PORT}`);
+    console.log(`Server rocking at ${process.env.PORT}`);
     models_1.sequelize.authenticate().then(() => __awaiter(void 0, void 0, void 0, function* () {
         console.log("database connected");
         try {
@@ -56,7 +57,8 @@ app.listen(process.env.PORT, () => {
         catch (error) {
             console.log(error);
         }
-    })).catch((e) => {
+    }))
+        .catch((e) => {
         console.log(e.message);
     });
 });

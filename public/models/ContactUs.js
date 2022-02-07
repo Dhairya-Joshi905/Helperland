@@ -81,14 +81,6 @@ exports.ContactUsModelAttributes = {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true
     },
-    createdAt: {
-        type: sequelize_1.DataTypes.DATE,
-        allowNull: false
-    },
-    updatedAt: {
-        type: sequelize_1.DataTypes.DATE,
-        allowNull: false
-    },
     Status: {
         type: sequelize_1.DataTypes.BIGINT,
         allowNull: true
@@ -100,5 +92,17 @@ exports.ContactUsModelAttributes = {
     AssignedToUser: {
         type: sequelize_1.DataTypes.BIGINT,
         allowNull: true
+    },
+    IsDeleted: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    createdAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: false
+    },
+    updatedAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: false
     }
 };

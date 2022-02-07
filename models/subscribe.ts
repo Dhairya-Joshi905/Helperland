@@ -25,28 +25,36 @@
 import { Model, DataTypes, ModelAttributes } from 'sequelize';
 
 export class Subscribe extends Model {
+  
   id!: number;
+  
   Email!: string;
+  
   createdAt!: Date;
+  
   updatedAt!: Date;
 };
 
 export const SubscribeModelAttributes: ModelAttributes = {
+  
   id: {
     autoIncrement: true,
     type: DataTypes.BIGINT,
     allowNull: false,
     primaryKey: true
   },
+  
   Email: {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,
   },
+  
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false
   },
+  
   updatedAt: {
     type: DataTypes.DATE,
     allowNull: false

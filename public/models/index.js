@@ -1,7 +1,7 @@
 "use strict";
 // 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubscribeDefineModel = exports.ContactUsDefineModel = exports.db = exports.sequelize = exports.Sequelize = void 0;
+exports.UserDefineModel = exports.SubscribeDefineModel = exports.ContactUsDefineModel = exports.db = exports.sequelize = exports.Sequelize = void 0;
 // const fs = require('fs');
 // const path = require('path');
 // const Sequelize = require('sequelize');
@@ -37,6 +37,7 @@ const sequelize_1 = require("sequelize");
 Object.defineProperty(exports, "Sequelize", { enumerable: true, get: function () { return sequelize_1.Sequelize; } });
 const contactus_1 = require("./contactus");
 const subscribe_1 = require("./subscribe");
+const user_1 = require("./user");
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
 const sequelize = config.url
@@ -51,8 +52,13 @@ const SubscribeDefineModel = sequelize.define('Subscribe', Object.assign({}, sub
     tableName: 'Subscribe'
 });
 exports.SubscribeDefineModel = SubscribeDefineModel;
+const UserDefineModel = sequelize.define('User', Object.assign({}, user_1.UserModelAttributes), {
+    tableName: 'User'
+});
+exports.UserDefineModel = UserDefineModel;
 exports.db = {
     sequelize: sequelize,
     ContactUs: ContactUsDefineModel,
-    Subscribe: SubscribeDefineModel
+    Subscribe: SubscribeDefineModel,
+    User: UserDefineModel
 };

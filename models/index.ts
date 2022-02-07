@@ -40,6 +40,7 @@
 import { BuildOptions, Model, Sequelize } from 'sequelize';
 import { ContactUs, ContactUsModelAttributes } from "./contactus";
 import { Subscribe, SubscribeModelAttributes } from "./subscribe";
+import { User, UserModelAttributes } from "./user";
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -57,6 +58,10 @@ type ContactUsModelStatic = typeof Model & {
 
 type SubscribeModelStatic = typeof Model & {
   new (values?: object, options?: BuildOptions): Subscribe;
+};
+
+type UserModelStatic = typeof Model & {
+  new (values?: object, options?: BuildOptions): User;
 };
 
 const ContactUsDefineModel = sequelize.define(
@@ -77,17 +82,29 @@ const SubscribeDefineModel = sequelize.define(
   }
 ) as SubscribeModelStatic;
 
+const UserDefineModel = sequelize.define(
+  'User',{
+    ...UserModelAttributes
+  },
+  {
+    tableName: 'User'
+  }
+) as UserModelStatic;
+
 export interface DbContext {
   sequelize: Sequelize;
   ContactUs: ContactUsModelStatic;  
-  Subscribe: SubscribeModelStatic;  
+  Subscribe: SubscribeModelStatic;
+  User: UserModelStatic;
 }
 
 export const db: DbContext = {
   sequelize: sequelize,
   ContactUs: ContactUsDefineModel,
-  Subscribe: SubscribeDefineModel
+  Subscribe: SubscribeDefineModel,
+  User: UserDefineModel
 }
 
 export {ContactUsDefineModel};
 export {SubscribeDefineModel};
+export {UserDefineModel};
