@@ -32,38 +32,23 @@
 //   return ContactUs;
 // };
 
-import { Model, DataTypes, ModelAttributes } from 'sequelize';
+import {Model, DataTypes, ModelAttributes} from 'sequelize';
 
 export class ContactUs extends Model {
-  
   id!: number;
-  
   FirstName!: string;
-  
   LastName!: string;
-  
   Email!: string;
-  
   SubjectType!: string;
-  
   Subject?: string;
-  
   PhoneNumber!: string;
-  
   Message!: string;
-  
   UploadFileName?: string;
-  
   Status?: number;
-  
   Priority?: number;
-  
   AssignedToUser?: number;
-  
   IsDeleted!: boolean;
-  
   createdAt!: Date;
-  
   updatedAt!: Date;
 };
 
@@ -89,18 +74,16 @@ export const ContactUsModelAttributes: ModelAttributes = {
   Email: {
     type: DataTypes.STRING,
     unique: true,
-    allowNull: false,
+    allowNull: false
   },
   
   SubjectType: {
     type: DataTypes.STRING,
-    unique: true,
-    allowNull: false,
+    allowNull: false
   },
   
   Subject: {
     type: DataTypes.STRING,
-    unique: true
   },
   
   PhoneNumber: {
