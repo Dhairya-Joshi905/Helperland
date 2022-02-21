@@ -31,6 +31,12 @@ import { ForgotPasswordSchema } from './3.4 ForgotPasswordAPI/ForgotPassword.mod
 import { ForgotPasswordService } from './3.4 ForgotPasswordAPI/ForgotPassword.service';
 import { ForgotPasswordController} from './3.4 ForgotPasswordAPI/ForgotPassword.controller';
 
+import { BookServiceController } from "../3. Book Service/bookservice.controller";
+import { BookServiceSchema } from "../3. Book Service/bookservice.model";
+import { BookServiceRepository } from "../3. Book Service/bookservice.repository";
+import { BookService } from "../3. Book Service/bookservice.service";
+
+const {zipcode, userAddress, createService} = BookServiceSchema;
 const { contus_add, contus_get, contus_update } = ContactUsSchema;
 const { subs_get, subs_add } = SubscribeSchema;
 const { csignup_add, csignup_get, csignup_update } = CustomerSignUpSchema;
@@ -64,6 +70,10 @@ const forgotpasswordrepo: ForgotPasswordRepository = new ForgotPasswordRepositor
 const forgotpasswordservice: ForgotPasswordService = new ForgotPasswordService(forgotpasswordrepo);
 const forgotpasswordcontroller: ForgotPasswordController = new ForgotPasswordController(forgotpasswordservice);
 
+const bookservicerepo: BookServiceRepository = new BookServiceRepository();
+const bookserviceservice: BookServiceService = new BookServiceService(bookservicerepo);
+const bookservicecontroller: BookServiceController = new BookServiceController(bookserviceservice);
+
 router.post('/ContactUs', celebrate(contus_add), contactuscontroller.createContactUs);
 router.get('/ContactUs/:id', celebrate(contus_get), contactuscontroller.getContactUsById);
 router.get('/ContactUs', contactuscontroller.getAllContactUs);
@@ -92,5 +102,10 @@ router.post('/login',celebrate(login_check), logincontroller.Login);
 
 router.post('/ForgotPassword', celebrate(reset), forgotpasswordcontroller.forgotPassword);
 router.post('/ResetPassword', celebrate(newpassword), forgotpasswordcontroller.resetPassword);
+
+router.post('/CheckZipCode', celebrate(zipcode), bookservicecontroller.checkZipCode);
+router.post('/CreateRequest', celebrate(createService), bookservicecontroller.CreateServiceRequest);
+router.post('/CreateAddress', celebrate(userAddress), bookservicecontroller.createAddress);
+router.get('/GetAllAddress', bookservicecontroller.getUserAddresses);
 
 export = router;
