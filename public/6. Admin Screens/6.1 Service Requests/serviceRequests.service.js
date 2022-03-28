@@ -1,0 +1,402 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServiceRequestService = void 0;
+// Used for getting date in specific format
+var moment_1 = __importDefault(require("moment"));
+var ServiceRequestService = /** @class */ (function () {
+    function ServiceRequestService(srRepository) {
+        this.srRepository = srRepository;
+        this.srRepository = srRepository;
+    }
+    ServiceRequestService.prototype.getAllSR = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var displaySR, ratings, sp, srArray, _a, _b, _i, sr, customer, address, time, status_1, sortedSR;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        displaySR = [];
+                        return [4 /*yield*/, this.srRepository.getAllSR()];
+                    case 1:
+                        srArray = _c.sent();
+                        if (!(srArray && srArray.length > 0)) return [3 /*break*/, 15];
+                        _a = [];
+                        for (_b in srArray)
+                            _a.push(_b);
+                        _i = 0;
+                        _c.label = 2;
+                    case 2:
+                        if (!(_i < _a.length)) return [3 /*break*/, 14];
+                        sr = _a[_i];
+                        return [4 /*yield*/, this.srRepository.getUDById(srArray[sr].UserId)];
+                    case 3:
+                        customer = _c.sent();
+                        return [4 /*yield*/, this.srRepository.getSRAddress(srArray[sr].ServiceRequestId)];
+                    case 4:
+                        address = _c.sent();
+                        if (!srArray[sr].ServiceProviderId) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this.srRepository.getUDById(srArray[sr].ServiceProviderId)];
+                    case 5:
+                        sp = _c.sent();
+                        return [3 /*break*/, 7];
+                    case 6:
+                        sp = null;
+                        _c.label = 7;
+                    case 7:
+                        if (!sp) return [3 /*break*/, 9];
+                        return [4 /*yield*/, this.srRepository.getRatings(customer === null || customer === void 0 ? void 0 : customer.UserId, sp.UserId, srArray[sr].ServiceRequestId)];
+                    case 8:
+                        ratings = _c.sent();
+                        return [3 /*break*/, 10];
+                    case 9:
+                        ratings = null;
+                        _c.label = 10;
+                    case 10: return [4 /*yield*/, this.convertTimeToStartEndTime(srArray[sr])];
+                    case 11:
+                        time = _c.sent();
+                        return [4 /*yield*/, this.getStatus(srArray[sr].Status)];
+                    case 12:
+                        status_1 = _c.sent();
+                        displaySR.push({
+                            ServiceId: srArray[sr].ServiceRequestId,
+                            ServiceDate: {
+                                Date: srArray[sr].ServiceStartDate.toString().split('-').reverse().join('/'),
+                                Time: time
+                            },
+                            CustomerDetails: {
+                                Name: (customer === null || customer === void 0 ? void 0 : customer.FirstName) + " " + (customer === null || customer === void 0 ? void 0 : customer.LastName),
+                                UserId: customer === null || customer === void 0 ? void 0 : customer.UserId,
+                                Address: {
+                                    StreetName: address === null || address === void 0 ? void 0 : address.Addressline1,
+                                    HouseNumber: address === null || address === void 0 ? void 0 : address.Addressline2,
+                                    PostalCode: address === null || address === void 0 ? void 0 : address.PostalCode,
+                                    City: address === null || address === void 0 ? void 0 : address.City
+                                }
+                            },
+                            ServiceProvider: {
+                                Name: (sp === null || sp === void 0 ? void 0 : sp.FirstName) + " " + (sp === null || sp === void 0 ? void 0 : sp.LastName),
+                                ServiceProviderId: sp === null || sp === void 0 ? void 0 : sp.UserId,
+                                ProfilePicture: sp === null || sp === void 0 ? void 0 : sp.UserProfilePicture,
+                                Ratings: ratings === null || ratings === void 0 ? void 0 : ratings.Ratings
+                            },
+                            GrossAmount: srArray[sr].TotalCost,
+                            NetAmount: srArray[sr].TotalCost,
+                            Discount: srArray[sr].Discount,
+                            Status: status_1,
+                            PaymentStatus: srArray[sr].PaymentDone,
+                            HasIssue: srArray[sr].HasIssue
+                        });
+                        _c.label = 13;
+                    case 13:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 14:
+                        sortedSR = displaySR.sort(function (a, b) { return a.ServiceId - b.ServiceId; });
+                        return [2 /*return*/, sortedSR];
+                    case 15: return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    ServiceRequestService.prototype.getStatus = function (status) {
+        return __awaiter(this, void 0, void 0, function () {
+            var statusString;
+            return __generator(this, function (_a) {
+                if (status === null)
+                    statusString = null;
+                else if (status === 1)
+                    statusString = 'New';
+                else if (status === 2)
+                    statusString = 'Pending';
+                else if (status === 3)
+                    statusString = 'Completed';
+                else if (status === 4)
+                    statusString = 'Cancelled';
+                else if (status === 5)
+                    statusString = 'Refunded';
+                else
+                    statusString = 'Invalid Status';
+                return [2 /*return*/, statusString];
+            });
+        });
+    };
+    ServiceRequestService.prototype.convertTimeToStartEndTime = function (serviceRequest) {
+        return __awaiter(this, void 0, void 0, function () {
+            var startTimeArray, startTime, endTimeInt, endTimeArray, time;
+            return __generator(this, function (_a) {
+                startTimeArray = serviceRequest.ServiceStartTime.toString().split(':');
+                startTime = startTimeArray[0] + ":" + startTimeArray[1];
+                if (startTimeArray[1] === "30")
+                    startTimeArray[1] = "0.5";
+                else
+                    startTimeArray[1] = "0";
+                endTimeInt = parseFloat(startTimeArray[0]) + parseFloat(startTimeArray[1]) + serviceRequest.ServiceHours + serviceRequest.ExtraHours;
+                endTimeArray = endTimeInt.toString().split('.');
+                if (endTimeArray[1] === '5')
+                    endTimeArray[1] = '30';
+                else
+                    endTimeArray[1] = '00';
+                time = startTime + " - " + endTimeArray[0] + ":" + endTimeArray[1];
+                return [2 /*return*/, time];
+            });
+        });
+    };
+    ServiceRequestService.prototype.filterData = function (srArray, filters) {
+        return __awaiter(this, void 0, void 0, function () {
+            var filteredData, fromDate_1, toDate_1, user_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (filters.ServiceRequestId)
+                            filteredData = srArray.filter(function (element) { return element.ServiceId === filters.ServiceRequestId; });
+                        if (filters.Status) {
+                            if (filteredData)
+                                filteredData = filteredData.filter(function (element) { return element.Status === filters.Status; });
+                            else
+                                filteredData = srArray.filter(function (element) { return element.Status === filters.Status; });
+                        }
+                        if (filters.PostalCode) {
+                            if (filteredData) {
+                                // console.log(filters.PostalCode);
+                                filteredData = filteredData.filter(function (element) { return element.CustomerDetails.Address.PostalCode === filters.PostalCode; });
+                            }
+                            else
+                                filteredData = srArray.filter(function (element) { return element.CustomerDetails.Address.PostalCode === filters.PostalCode; });
+                        }
+                        if (filters.UserId) {
+                            if (filteredData)
+                                filteredData = filteredData.filter(function (element) { return element.CustomerDetails.UserId === filters.UserId; });
+                            else
+                                filteredData = srArray.filter(function (element) { return element.CustomerDetails.UserId === filters.UserId; });
+                        }
+                        if (filters.ServiceProviderId) {
+                            if (filteredData)
+                                filteredData = filteredData.filter(function (element) { return element.ServiceProvider.ServiceProviderId === filters.ServiceProviderId; });
+                            else
+                                filteredData = srArray.filter(function (element) { return element.ServiceProvider.ServiceProviderId === filters.ServiceProviderId; });
+                        }
+                        if (filters.HasIssue !== null) {
+                            if (filteredData)
+                                filteredData = filteredData.filter(function (element) { return element.HasIssue === filters.HasIssue; });
+                            else
+                                filteredData = srArray.filter(function (element) { return element.HasIssue === filters.HasIssue; });
+                        }
+                        if (filters.FromDate) {
+                            fromDate_1 = new Date(filters.FromDate.split('-').reverse().join('-'));
+                            if (filteredData) {
+                                // console.log(fromDate);
+                                filteredData = filteredData.filter(function (element) { return new Date(element.ServiceDate.Date.split('/').reverse().join('-')) >= fromDate_1; });
+                            }
+                            else
+                                filteredData = srArray.filter(function (element) { return new Date(element.ServiceDate.Date.split('/').reverse().join('-')) >= fromDate_1; });
+                        }
+                        if (filters.ToDate) {
+                            toDate_1 = new Date(filters.ToDate.split('-').reverse().join('-'));
+                            if (filteredData)
+                                filteredData = filteredData.filter(function (element) { return new Date(element.ServiceDate.Date.split('/').reverse().join('-')) <= toDate_1; });
+                            else
+                                filteredData = srArray.filter(function (element) { return new Date(element.ServiceDate.Date.split('/').reverse().join('-')) <= toDate_1; });
+                        }
+                        if (!filters.Email) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.srRepository.getUserByEmail(filters.Email)];
+                    case 1:
+                        user_1 = _a.sent();
+                        if (user_1) {
+                            if (filteredData)
+                                filteredData = filteredData.filter(function (element) { return element.CustomerDetails.UserId === user_1.UserId || element.ServiceProvider.ServiceProviderId === user_1.UserId; });
+                            else
+                                filteredData = srArray.filter(function (element) { return element.CustomerDetails.UserId === user_1.UserId || element.ServiceProvider.ServiceProviderId === user_1.UserId; });
+                        }
+                        else
+                            filteredData = [];
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, filteredData];
+                }
+            });
+        });
+    };
+    ServiceRequestService.prototype.getSRById = function (requestId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.srRepository.getSRById(parseInt(requestId))];
+            });
+        });
+    };
+    ServiceRequestService.prototype.updateSR = function (requestId, userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.srRepository.updateSR(parseInt(requestId), parseInt(userId))];
+            });
+        });
+    };
+    ServiceRequestService.prototype.getCustAndSPEmail = function (serviceRequest) {
+        return __awaiter(this, void 0, void 0, function () {
+            var email, user, serviceProvider;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        email = [];
+                        return [4 /*yield*/, this.srRepository.getUDById(serviceRequest.UserId)];
+                    case 1:
+                        user = _a.sent();
+                        return [4 /*yield*/, this.srRepository.getUDById(serviceRequest.ServiceProviderId)];
+                    case 2:
+                        serviceProvider = _a.sent();
+                        if (serviceRequest.UserId && user)
+                            email.push(user.Email);
+                        if (serviceRequest.ServiceProviderId && serviceProvider)
+                            email.push(serviceProvider.Email);
+                        return [2 /*return*/, email];
+                }
+            });
+        });
+    };
+    ServiceRequestService.prototype.createEmailForCancelSR = function (userEmail, srId) {
+        var email = {
+            from: 'dhairyajoshi.905@gmail.com',
+            to: userEmail,
+            subject: 'About cancelled service request',
+            html: "<h3>Due to some reason service request ".concat(srId, " has been cancelled by admin.</h3>")
+        };
+        return email;
+    };
+    ServiceRequestService.prototype.createEmailForRescheduleSR = function (userEmail, body) {
+        var email = {
+            from: 'dhairyajoshi.905@gmail.com',
+            to: userEmail,
+            subject: 'About rescheduled service request',
+            html: "\n            <h3>service request ".concat(body.ServiceRequestId, " has been rescheduled by admin.</h3>\n            <h4>new date and time is ").concat(body.ServiceStartDate, " and ").concat(body.ServiceTime, "</h4>\n            ")
+        };
+        return email;
+    };
+    ServiceRequestService.prototype.createEmailForUpdatedAddress = function (userEmail, address) {
+        var email = {
+            from: 'dhairyajoshi.905@gmail.com',
+            to: userEmail,
+            subject: 'About updated service request',
+            html: "\n            <h2>Address of service request ".concat(address.ServiceRequestId, " has been changed by admin.</h2>\n            </br>\n            <h3>New Address is</h3>\n            </br>\n            <p>Street: ").concat(address.Addressline1, "</p>\n            </br>\n            <p>House Number: ").concat(address.Addressline2, "</p>\n            </br>\n            <p>City: ").concat(address.City, "</p>\n            </br>\n            <p>Postal Code: ").concat(address.PostalCode, "</p>\n            ")
+        };
+        return email;
+    };
+    ServiceRequestService.prototype.createEmailForUpdatedSR = function (userEmail, address) {
+        var email = {
+            from: 'dhairyajoshi.905@gmail.com',
+            to: userEmail,
+            subject: 'About updated and rescheduled service request',
+            html: "\n            <h2>service request ".concat(address.ServiceRequestId, " has been rescheduled and address is updated by admin.</h2>\n            </br>\n            <h3>New Address, New Date and New Time is</h3>\n            </br>\n            <p>Street: ").concat(address.Addressline1, "</p>\n            </br>\n            <p>House Number: ").concat(address.Addressline2, "</p>\n            </br>\n            <p>City: ").concat(address.City, "</p>\n            </br>\n            <p>Postal Code: ").concat(address.PostalCode, "</p>\n            </br>\n            <p>Date: ").concat(address.ServiceStartDate, "</p>\n            </br>\n            <p>Time: ").concat(address.ServiceTime, "</p>\n            ")
+        };
+        return email;
+    };
+    ServiceRequestService.prototype.updateSRAddress = function (body) {
+        return __awaiter(this, void 0, void 0, function () {
+            var srAddress, updatedAddress;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.srRepository.getSRAddress(body.ServiceRequestId)];
+                    case 1:
+                        srAddress = _a.sent();
+                        if (!srAddress) return [3 /*break*/, 5];
+                        if (!(srAddress.Addressline1 === body.Addressline1 && srAddress.Addressline2 === body.Addressline2 && srAddress.City === body.City && srAddress.PostalCode === body.PostalCode)) return [3 /*break*/, 2];
+                        updatedAddress = null;
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, this.srRepository.updateSRAddress(body)];
+                    case 3:
+                        updatedAddress = _a.sent();
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
+                        updatedAddress = null;
+                        _a.label = 6;
+                    case 6: return [2 /*return*/, updatedAddress];
+                }
+            });
+        });
+    };
+    ServiceRequestService.prototype.checkIfRescheduledDateIsSame = function (body) {
+        return __awaiter(this, void 0, void 0, function () {
+            var isSame, serviceRequest, bodyDate, srDate;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        isSame = false;
+                        return [4 /*yield*/, this.srRepository.getSRById(body.ServiceRequestId)];
+                    case 1:
+                        serviceRequest = _a.sent();
+                        if (serviceRequest) {
+                            bodyDate = new Date(body.ServiceStartDate.split('/').reverse().join('-'));
+                            srDate = new Date(serviceRequest.ServiceStartDate);
+                            if (bodyDate > srDate || bodyDate < srDate)
+                                isSame = false;
+                            else
+                                isSame = true;
+                        }
+                        return [2 /*return*/, isSame];
+                }
+            });
+        });
+    };
+    ServiceRequestService.prototype.compareDateWithCurrentDate = function (date) {
+        var formatedDate1 = new Date(date.split("/").reverse().join("-"));
+        var formatedDate2 = new Date((0, moment_1.default)(new Date()).format("YYYY-MM-DD"));
+        if (formatedDate1 > formatedDate2)
+            return true;
+        else
+            return false;
+    };
+    ;
+    ServiceRequestService.prototype.rescheduleSR = function (body, userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var date, rescheduledSR;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        date = new Date(body.ServiceStartDate.split('/').reverse().join('-'));
+                        return [4 /*yield*/, this.srRepository.rescheduleSR(date, body, parseInt(userId))];
+                    case 1:
+                        rescheduledSR = _a.sent();
+                        return [2 /*return*/, rescheduledSR];
+                }
+            });
+        });
+    };
+    return ServiceRequestService;
+}());
+exports.ServiceRequestService = ServiceRequestService;
